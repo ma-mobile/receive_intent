@@ -157,7 +157,7 @@ fun getApplicationSignature(context: Context, packageName: String): List<String>
     try {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             // New signature
-            val sig = context.packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo
+            val sig = context.packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)?.signingInfo
                 ?: throw IllegalStateException("no signature found")
             signatureList = if (sig.hasMultipleSigners()) {
                 // Send all with apkContentsSigners
@@ -175,7 +175,7 @@ fun getApplicationSignature(context: Context, packageName: String): List<String>
                 }
             }
         } else {
-            val sig = context.packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures
+            val sig = context.packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)?.signatures
                 ?: throw IllegalStateException("no signature found")
             signatureList = sig.map {
                 val digest = MessageDigest.getInstance("SHA-256")
